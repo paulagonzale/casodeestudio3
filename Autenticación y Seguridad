@@ -1,0 +1,18 @@
+import org.mindrot.jbcrypt.BCrypt; // Librería común para hash
+
+public class AuthService {
+    
+    // Encriptar contraseña antes de guardar
+    public String encriptarPassword(String passwordPlano) {
+        return BCrypt.hashpw(passwordPlano, BCrypt.gensalt());
+    }
+
+    // Servicio de Autenticación por email y password
+    public boolean autenticar(String email, String passwordPlano, String passwordHashDB) {
+        if (BCrypt.checkpw(passwordPlano, passwordHashDB)) {
+            // Generar Token aquí (Simulado para este ejemplo)
+            return true;
+        }
+        return false;
+    }
+}
