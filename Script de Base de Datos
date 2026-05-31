@@ -1,0 +1,36 @@
+-- 1. Crear Base de Datos
+CREATE DATABASE gestion_funcionarios;
+USE gestion_funcionarios;
+
+-- 2. Tabla de Roles
+CREATE TABLE roles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL -- 'Administrador', 'Docente'
+);
+
+-- 3. Tabla de Usuarios (Seguridad)
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL, -- Almacenará el hash encriptado
+    rol_id INT,
+    FOREIGN KEY (rol_id) REFERENCES roles(id)
+);
+
+-- 4. Tabla de Funcionarios (CRUD Principal)
+CREATE TABLE funcionarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    documento VARCHAR(20) UNIQUE NOT NULL,
+    nombres VARCHAR(100) NOT NULL,
+    apellidos VARCHAR(100) NOT NULL,
+    estado_civil VARCHAR(20),
+    sexo CHAR(1),
+    direccion VARCHAR(255),
+    telefono VARCHAR(20),
+    fecha_nacimiento DATE
+);
+
+-- 5. Inserción de Datos Iniciales
+INSERT INTO roles (nombre) VALUES ('Administrador'), ('Docente');
+-- Nota: La contraseña 'admin123' debe insertarse como hash en la app real
+INSERT INTO usuarios (email, password, rol_id) VALUES ('admin@entidad.com', '$2a$12$EjemploHash...', 1);
