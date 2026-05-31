@@ -1,0 +1,41 @@
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class FuncionarioDAO {
+    private Connection connection;
+
+    public FuncionarioDAO(Connection connection) {
+        this.connection = connection;
+    }
+
+    // Listar Funcionarios [cite: 22]
+    public List<Funcionario> listar() throws SQLException {
+        List<Funcionario> lista = new ArrayList<>();
+        String sql = "SELECT * FROM funcionarios";
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Funcionario f = new Funcionario();
+                f.setId(rs.getInt("id"));
+                f.setDocumento(rs.getString("documento"));
+                f.setNombres(rs.getString("nombres"));
+                lista.add(f);
+            }
+        }
+        return lista;
+    }
+
+    // Crear Funcionario [cite: 23]
+    public void crear(Funcionario f) throws SQLException {
+        String sql = "INSERT INTO funcionarios(documento, nombres, apellidos) VALUES(?,?,?)";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, f.getDocumento());
+            stmt.setString(2, f.getNombres());
+            stmt.setString(3, f.getApellidos());
+            stmt.executeUpdate();
+        }
+    }
+    
+    // Implementar Editar y Eliminar siguiendo la misma estructura [cite: 24, 25]
+}
